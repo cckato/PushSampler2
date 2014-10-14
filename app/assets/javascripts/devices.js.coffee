@@ -3,22 +3,35 @@
 # You can use CoffeeScript in this file: http://coffeescript.org/
 
 $ ->
+
+  $notice = $('#notice')
+  if $notice.html() == ""
+    $notice.hide()
+  else
+    setTimeout ->
+      $notice.fadeOut(800)
+    , 2000
+
   $('.btn-push').click ->
     data =
       "title": $('#title').val()
       "message": $('#message').val()
       "ticker": $('#ticker').val()
     url = "devices/#{$(@).data('deviceId')}/push"
-    $.ajax({
-      type:'POST',
+    $.ajax
+      type:'POST'
       url:url,
       data:data,
       dataType:"html"
-    })
     .done (response, success) ->
-      alert "成功"
+      console.log "成功"
+      $('#notice').html("個別にPush通知を送ったよ").show()
+      setTimeout ->
+        $('#notice').fadeOut(800)
+      , 2000
     .fail (response, success) ->
-      alert "失敗"
+      console.log "失敗"
+
 
 
 
