@@ -1,0 +1,56 @@
+<% if !notice.blank? %>
+    <p id="notice" class="alert alert-success"><%= notice %></p>
+<% end %>
+<h1>デバイスリスト</h1>
+
+<%= form_tag(devices_push_path, method: :post, class: "broadcast form-horizontal") do %>
+    <div class="form-group">
+      <label class="control-label col-sm-2" for="title">タイトル</label>
+      <div class="col-sm-4"><%= text_field_tag :title, nil, placeholder: "尊大なるタイトル..." %></div>
+    </div>
+    <div class="form-group">
+      <label class="control-label col-sm-2" for="message">メッセージ</label>
+      <div class="col-sm-4"><%= text_field_tag :message, nil, placeholder: "崇高なるメッセージ..." %></div>
+    </div>
+    <div class="form-group">
+      <label class="control-label col-sm-2" for="ticker">ティッカー</label>
+      <div class="col-sm-4"><%= text_field_tag :ticker, nil, placeholder: "傲慢なるティッカー..." %></div>
+    </div>
+    <div class="form-group">
+      <div class="col-sm-offset-2 col-sm-4">
+        <%= submit_tag("ブロードキャスト", class: "btn btn-primary") %>
+      </div>
+    </div>
+<% end %>
+
+<table class="table table-striped table-bordered">
+  <thead>
+  <tr>
+    <th>RegistrationID</th>
+    <th>Push通知</th>
+    <th></th>
+  </tr>
+  </thead>
+
+  <tbody>
+  <% @devices.each do |device| %>
+      <tr>
+        <td><%= device.registration_id[0, 10] + "..." %></td>
+        <td><%= link_to 'Push', "/devices/#{device.id}/push", method: :post, class: "btn btn-default" %></td>
+        <td>
+          <div class="btn-group">
+            <%= link_to '詳細', device, class: "btn btn-xs btn-default" %>
+            <%= link_to '編集', edit_device_path(device), class: "btn btn-xs btn-default" %>
+            <%= link_to '削除', device, method: :delete, data: {confirm: 'ほんとに消すのん？'}, class: "btn btn-xs btn-default" %>
+          </div>
+        </td>
+      </tr>
+  <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to '新規デバイスを追加', new_device_path %>
+
+
